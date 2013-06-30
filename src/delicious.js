@@ -35,7 +35,7 @@ for (var prop in LoaderBase.prototype) {
   DeliciousLoader.prototype[prop] = LoaderBase.prototype[prop];
 }
 
-DeliciousLoader.prototype.url = 'https://api.del.icio.us/v1/posts/all';
+DeliciousLoader.prototype.url = 'https://api.del.icio.us/v1/posts/all?results=10000000';
 
 DeliciousLoader.prototype._load = function() {
 
