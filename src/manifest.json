@@ -1,7 +1,7 @@
 {
   "name": "Online Bookmark IncSearch",
   "manifest_version": 2,
-  "version": "1.0",
+  "version": "1.1",
   "description": "This extension is a incremental search UI for online bookmarks(Google Bookmarks, Delicious, etc.), You can find bookmarks quickly.",
   "icons": {
     "48": "icon48.png",
