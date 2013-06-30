@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <link rel="shortcut icon" href="./icon16.png" type="image/png" /> 
+    <link rel="stylesheet" href="./base.css" type="text/css" />
+    <link rel="stylesheet" href="./glayer.css" type="text/css" />
+    <script type="text/javascript" src="./glayer.js"></script>
+    <script type="text/javascript" src="./glayer_ex.js"></script>
+    <script type="text/javascript" src="./database.js"></script>
+    <script type="text/javascript" src="./incsearch.js"></script>
+    <script type="text/javascript" src="./loader.js"></script>
+    <script type="text/javascript" src="./pinboard.js"></script>
+    <script type="text/javascript" src="./delicious.js"></script>
+    <script type="text/javascript" src="./googlebookmarks.js"></script>
+    <script type="text/javascript" src="./livedoorclip.js"></script>
+    <script type="text/javascript" src="./hatenabookmark.js"></script>
+    <script type="text/javascript" src="./init.js"></script>
+    <title>Online Bookmark IncSearch</title>
+  </head>
+  <body>
+    <p>
+      <span id="title" class="title">Online Bookmark IncSearch</span>
+      <input id="text" name="pattern" value="" size="80" type="text" autocomplete="off" />
+      <span id="option">
+        <a id ="sync" href="javascript:void(0)"><img src="./sync.gif" alt="Sync Bookmarks" />sync</a>
+        <a id ="setting" href="javascript:void(0)"><img src="./setting.gif" alt="Setting" />setting</a>
+        <a id ="help" href="javascript:void(0)"><img src="./help.gif" alt="Help" />help</a>
+      </span>
+    </p>
+    <div id="viewHeader">
+      <span style="float:right;" id="pageLinkTop"></span>
+      <span id="status"></span>
+    </div>
+    <div id="viewArea"></div>
+    <div id="viewFooter">
+      <div id="pageLinkBottom"></div>
+    </div>
+    <div id="footer"><p>&#169;&nbsp;2011&nbsp;&nbsp;<a href="http://www.enjoyxstudy.com/chrome/extension/online_bookmark_incsearch/">onozaty</a>.&nbsp;&nbsp;&nbsp;&nbsp;</p></div>
+    <div id="loadingBox" class="glayer_box" style="display: none;">
+      <p>
+        <img src="./loader.gif" alt="loading" />&nbsp;
+        <span id="loadingMessage"></span>
+      </p>
+    </div>
+    <div id="selectBookmarkServiceBox" class="glayer_box_big" style="display: none;">
+      <p>Select Bookmark Service</p>
+      <form id="bookmarkServiceForm" style="font-size: 90%; margin: 5px;">
+        <input type="radio" name="bookmarkService" value="delicious" id="deliciousRadio" checked=""/><label for="deliciousRadio">del.icio.us</label>
+        <input type="radio" name="bookmarkService" value="google" id="googleRadio" /><label for="googleRadio">Google Bookmakrs</label>
+        <input type="radio" name="bookmarkService" value="pinboard" id="pinboardRadio" /><label for="pinboardRadio">Pinboard</label>
+        <input type="radio" name="bookmarkService" value="hatena" id="hatenaRadio" /><label for="hatenaRadio">Hatena Bookmark</label>
+        <input type="radio" name="bookmarkService" value="livedoor" id="livedoorRadio" /><label for="livedoorRadio">Livedoor Clip</label>
+      </form>
+      <div class="buttons">
+        <input id="selectBookmarkServiceStart" type="button" value="Start"/>
+      </div>
+    </div>
+    <div id="settingBox" class="glayer_box_big" style="display: none;">
+      <p>Setting</p>
+      <table>
+        <tr>
+          <th>Use bookmark service</th>
+          <td>
+            <select name="useBookmarkService" id="useBookmarkService">
+              <option value="delicious">del.icio.us</option>
+              <option value="google">Google Bookmakrs</option>
+              <option value="pinboard">Pinboard</option>
+              <option value="hatena">Hatena Bookmark</option>
+              <option value="livedoor">Livedoor Clip</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <th>Number of results</th>
+          <td><input id="numberOfResults" name="numberOfResults" type="text" value="" size="5" /></td>
+        </tr>
+        <tr>
+          <th>Size of input area</th>
+          <td><input id="sizeOfInputArea" name="sizeOfInputArea" type="text" value="" size="5" /></td>
+        </tr>
+      </table>
+      <div class="buttons">
+        <input id="settingSave" type="button" value="Save"/>
+        <input id="settingCancel" type="button" value="Cancel"/>
+      </div>
+    </div>
+    <div id="helpBox" class="glayer_box_big" style="display: none;">
+      <p>Shortcut Keys</p>
+      <table>
+        <tr>
+          <th>[Ctrl]+[Right]</th>
+          <td>Next page</td>
+        </tr>
+        <tr>
+          <th>[Ctrl]+[Left]</th>
+          <td>Previous page</td>
+        </tr>
+        <tr>
+          <th>[Ctrl]+[Down]</th>
+          <td>Next bookmark</td>
+        </tr>
+        <tr>
+          <th>[Ctrl]+[Up]</th>
+          <td>Previous bookmark</td>
+        </tr>
+        <tr>
+          <th>[Ctrl]+[Enter] or [Ctrl]+[m]</th>
+          <td>Open bookmark</td>
+        </tr>
+        <tr>
+          <th>[Ctrl]+[e]</th>
+          <td>Edit bookmark</td>
+        </tr>
+        <tr>
+          <th>[Ctrl]+[u]</th>
+          <td>Load bookmarks from Pinboard (sync bookmarks)</td>
+        </tr>
+        <tr>
+          <th>[Ctrl]+[s]</th>
+          <td>Open(Close) setting window</td>
+        </tr>
+        <tr>
+          <th>[Ctrl]+[/]</th>
+          <td>Show(Close) help (this page)</td>
+        </tr>
+      </table>
+      <br/>
+      <p>Input Text Pattern for Search</p>
+       <table>
+        <tr>
+          <th>a b</th>
+          <td>a AND b</td>
+        </tr>
+        <tr>
+          <th>a|b</th>
+          <td>a OR b</td>
+        </tr>
+        <tr>
+          <th>!a</th>
+          <td>NOT a</td>
+        </tr>
+      </table>
+      <div class="buttons">
+        <input id="helpClose" type="button" value="Close"/>
+      </div>
+    </div>
+  </body>
+</html>

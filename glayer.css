@@ -1,0 +1,76 @@
+#glayer {
+  position: fixed!important;
+  position: absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:100;
+  background-color:#1F1F1F;
+  -moz-opacity: 0.8;
+  opacity:.80;
+}
+
+/* Box Base */
+div.glayer_box {
+  position: fixed!important;
+  position: absolute;
+  z-index: 101;
+  width: 400px;
+  padding: 2px;
+  border: 5px solid #B8B8B8;
+  background-color: #FFFFFF;
+}
+
+div.glayer_box_big {
+  position: fixed!important;
+  position: absolute;
+  z-index: 101;
+  width: 500px;
+  padding: 2px;
+  border: 5px solid #B8B8B8;
+  background-color: #FFFFFF;
+}
+
+/* Message */
+p#glayer_message_text {
+  margin: 2px;
+  padding: 2px;
+  text-align: center;
+}
+
+/* Alert */
+p#glayer_alert_text {
+  margin: 2px;
+  padding: 2px;
+  text-align: center;
+}
+p#glayer_alert_button {
+  margin: 10px 0 0 0;
+  padding: 0;
+  text-align: center;
+}
+input#glayer_alert_ok {
+  font-size: 80%;
+}
+
+/* Confirm */
+p#glayer_confirm_text {
+  margin: 2px;
+  padding: 2px;
+  text-align: center;
+}
+p#glayer_confirm_button {
+  margin: 10px 0 0 0;
+  padding: 0;
+  text-align: center;
+}
+input#glayer_confirm_ok {
+  margin: 2px;
+  font-size: 80%;
+}
+input#glayer_confirm_cancel {
+  margin: 2px;
+  font-size: 80%;
+}
+

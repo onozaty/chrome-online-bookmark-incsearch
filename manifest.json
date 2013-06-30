@@ -1,0 +1,23 @@
+{
+  "name": "Online Bookmark IncSearch",
+  "version": "0.3",
+  "description": "This extension is a incremental search UI for online bookmarks(Google Bookmarks, Delicious, etc.), You can find bookmarks quickly.",
+  "icons": {
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "browser_action": {
+    "default_icon": "icon48.png"
+  },
+  "permissions": [
+    "tabs",
+    "cookies",
+    "https://api.pinboard.in/*",
+    "https://api.del.icio.us/*",
+    "https://secure.delicious.com/*",
+    "https://www.google.com/bookmarks/*",
+    "http://clip.livedoor.com/*",
+    "http://b.hatena.ne.jp/*"
+  ],
+  "background_page": "background.html"
+}
