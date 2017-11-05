@@ -1,0 +1,24 @@
+.container {
+    width: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+h1 {
+    font-size: 100%;
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+.btn.btn-link {
+    padding: 0;
+}
+
+.table, .table-responsive {
+    margin-bottom: 0;
+}
+
+td > p {
+    margin: 0;
+    padding-left: 5px;
+}

@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Online Bookmark Incremental Search</title>
+
+    <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="ui.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <!-- Begin page content -->
+    <div class="container">
+      <div>
+        <div class="pull-left"><h1>Online Bookmark Incremental Search</h1></div>
+        <div class="pull-right">
+          <button type="button" class="btn btn-link btn-xs">
+            <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Sync
+          </button>
+          <button type="button" class="btn btn-link btn-xs">
+            <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Setting
+          </button>
+          <button type="button" class="btn btn-link btn-xs">
+            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Help
+          </button>
+        </div>
+      </div>
+      <form>
+        <div class="form-group">
+          <input type="text" class="form-control" id="searchText">
+        </div>
+      </form>
+      <div id="result">
+        <div class="row">
+          <div id="status" class="col-xs-8">
+            1812 hits (display :1-10) / total : 1812
+          </div>
+          <div id="pageLinkTop" class="col-xs-4 text-right">
+            <button type="button" class="btn btn-link">prev</button>
+            <span>|</span>
+            <button type="button" class="btn btn-link">next</button>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-bordered table-condensed">
+            <tr>
+              <th></th>
+              <th width="60%">Description</th>
+              <th width="20%">Tags</th>
+              <th width="20%">Time</th>
+              <th></th>
+            </tr>
+            <tr class="active">
+              <td></td>
+              <td>
+                <a href="" target="_blank">AAA</a>
+                <br>
+                <p>Charsetのキャッシュ</p>
+              </td>
+              <td>[charset] [java]</td>
+              <td>2017-10-28T13:07:54Z</td>
+              <td>
+                <a href="" target="_blank">edit</a>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+                <a href="" target="_blank">AAA</a>
+                <br>
+                <p>Charsetのキャッシュ</p>
+              </td>
+              <td>[charset] [java]</td>
+              <td>2017-10-28T13:07:54Z</td>
+              <td>
+                <a href="" target="_blank">edit</a>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+                <a href="" target="_blank">AAA</a>
+                <br>
+                <p>Charsetのキャッシュ</p>
+              </td>
+              <td>[charset] [java]</td>
+              <td>2017-10-28T13:07:54Z</td>
+              <td>
+                <a href="" target="_blank">edit</a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="row">
+          <div id="pageLinkBottom" class="col-xs-offset-8 col-xs-4 text-right">
+            <button type="button" class="btn btn-link">prev</button>
+            <span>|</span>
+            <button type="button" class="btn btn-link">next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="lib/jquery.min.js"></script>
+    <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="ui.js"></script>
+  </body>
+</html>
