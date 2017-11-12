@@ -10,8 +10,16 @@ h1 {
   margin: 5px 0;
 }
 
+.glyphicon {
+  vertical-align: text-top;
+}
+
 .btn.btn-link {
   padding: 0;
+}
+
+.btn.pager-next {
+  margin-left: 5px;
 }
 
 .table, .table-responsive {

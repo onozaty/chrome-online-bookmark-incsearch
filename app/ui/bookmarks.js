@@ -4,6 +4,14 @@ class Bookmarks {
     this._bookmarks = bookmarks;
   }
 
+  all() {
+    return this._bookmarks;
+  }
+
+  total() {
+    return this._bookmarks.length;
+  }
+
   find(conditions) {
     return this._bookmarks
       .filter((bookmark) => conditions.match(bookmark.searchableText));
