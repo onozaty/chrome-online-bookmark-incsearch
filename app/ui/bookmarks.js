@@ -54,6 +54,7 @@ class Condition {
 
     if (conditionText.startsWith('!')) {
       // Not word
+      conditionText = conditionText.slice(1);
       return (text) => {
         if (text.indexOf(conditionText) != -1) {
           return null;
@@ -66,20 +67,21 @@ class Condition {
 
     if (conditionText.indexOf('|') != -1) {
       // Multi word (OR)
-      const conditions = conditionText.split('|');
+      const conditions = conditionText.split('|')
+                            .filter((condition) => condition.length > 0);
       return (text) => {
         const matchPositions = conditions
-          .map((condtion) => {
-            const index = text.indexOf(condtion);
+          .map((condition) => {
+            const index = text.indexOf(condition);
             if (index == -1) {
               return null;
             }
-            return {start: index, width: condition.legth};
+            return {start: index, width: condition.length};
           })
           .filter((position) => position != null)
           .sort(Condition.comparePosition);
 
-        if (matchPositions.legth == 0) {
+        if (matchPositions.length == 0) {
           return null;
         } else {
           // first index
@@ -94,7 +96,7 @@ class Condition {
       if (index == -1) {
         return null;
       }
-      return {start: index, width: conditionText.legth};
+      return {start: index, width: conditionText.length};
     }
   }
 }
@@ -102,18 +104,13 @@ class Condition {
 class Conditions {
 
   constructor(conditionsText) {
-    this._condtions = conditionsText.split(' ')
+    this._conditions = conditionsText.split(' ')
       .filter((conditionText) => conditionText != '')
       .map((conditionText) => new Condition(conditionText));
   }
 
   match(text) {
-    for (const condtion of this._condtions) {
-      if (condtion.match(text)) {
-        return true;
-      }
-    }
-    return false;
+    return this._conditions.every((condition) => condition.match(text));
   }
 
   highlightPositionOf(text) {
@@ -122,7 +119,7 @@ class Conditions {
       .filter((position) => position != null)
       .sort(Condition.comparePosition);
 
-    if (highlightPositions.legth == 0) {
+    if (highlightPositions.length == 0) {
       return null;
     } else {
       // first position

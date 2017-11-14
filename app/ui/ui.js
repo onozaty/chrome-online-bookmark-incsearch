@@ -22,6 +22,34 @@ class SearchableTable {
     this._results = this._bookmarks.all();
 
     this._showResults();
+    this._checkQueryLoop();
+  }
+
+  _checkQueryLoop() {
+
+    if (this._checkQueryLoopTimer) {
+      clearTimeout(this._checkQueryLoopTimer);
+    }
+
+    const query = this._elements.$query.val().trim();
+    if (query != this._oldQuery) {
+      this._oldQuery = query;
+      this._search(query);
+    }
+
+    this._checkQueryLoopTimer = setTimeout(this._checkQueryLoop.bind(this), 500);
+  }
+
+  _search(query) {
+
+    if (query.length == 0) {
+      this._results = this._bookmarks.all();
+    } else {
+      const conditions = new Conditions(query);
+      this._results = this._bookmarks.find(conditions);
+    }
+
+    this._showResults();
   }
 
   _nextPage() {
@@ -106,7 +134,7 @@ class SearchableTable {
 }
 
 const searchableTable = new SearchableTable(
-  createDummyBookmakrs(100),
+  createDummyBookmakrs(100000),
   10,
   {
     createEditUrl: function() {
@@ -114,6 +142,7 @@ const searchableTable = new SearchableTable(
     }
   },
   {
+    $query: $('#query'),
     $resultTable: $('#resultTable'),
     $status: $('#status'),
     $pagerPrev: $('button.pager-prev'),
