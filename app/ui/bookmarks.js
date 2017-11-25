@@ -50,8 +50,6 @@ class Condition {
 
   _parseConditionText(conditionText) {
 
-    conditionText = conditionText.toLowerCase();
-
     if (conditionText.startsWith('!')) {
       // Not word
       conditionText = conditionText.slice(1);
@@ -115,7 +113,14 @@ class Conditions {
 
   highlightPositionOf(text) {
     const highlightPositions = this._conditions
-      .map((condition) => condition.highlightPositionOf(text))
+      .map((condition, index) => {
+        const position = condition.highlightPositionOf(text);
+        if (position) {
+          position.conditionIndex = index;
+        }
+
+        return position;
+      })
       .filter((position) => position != null)
       .sort(Condition.comparePosition);
 

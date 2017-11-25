@@ -30,3 +30,16 @@ td > p {
   margin: 0;
   padding-left: 5px;
 }
+
+.highlight.color1 {
+  background-color: #FFFF99
+}
+.highlight.color2 {
+  background-color: #FFDFFF;
+}
+.highlight.color3 {
+  background-color: #CCFF99;
+}
+.highlight.color4 {
+  background-color: #FFCC99;
+}
