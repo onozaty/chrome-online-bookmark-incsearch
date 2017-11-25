@@ -18,11 +18,46 @@ class SearchableTable {
 
     this._elements.$pagerPrev.on('click', this._prevPage.bind(this));
     this._elements.$pagerNext.on('click', this._nextPage.bind(this));
+    this._elements.$document.on('keydown', this._handleShortcutKey.bind(this));
 
     this._results = this._bookmarks.all();
 
-    this._showResults();
     this._checkQueryLoop();
+  }
+
+  _handleShortcutKey(event) {
+
+    if (event.ctrlKey) {
+      switch(event.keyCode) {
+        case 13:  // Enter
+        case 77:  // m (Enter Mac OS X)
+          this._openCurrentRowUrl();
+          return false;
+
+        case 37:  // Left
+          this._prevPage();
+          return false;
+
+        case 38:  // Up
+          this._prevRow();
+          return false;
+
+        case 39:  // Right
+          this._nextPage();
+          return false;
+
+        case 40:  // Down
+          this._nextRow();
+          return false;
+
+        case 69:  // e
+          this._openCurrentRowEditWindow();
+          return false;
+ 
+        default:
+          break;
+      }
+    }
   }
 
   _checkQueryLoop() {
@@ -51,28 +86,90 @@ class SearchableTable {
     }
 
     this._showResults();
+
+    this._currentRowNumber = (this._results.length == 0) ? 0 : 1;
+    this._setActiveRow(this._currentRowNumber);
   }
 
   _nextPage() {
-    this._showResults(this._currentPageNo + 1);
+    if (this._currentPageNumber >= Math.ceil(this._results.length / this._numberOfPage)) {
+      return;
+    }
+
+    this._showResults(this._currentPageNumber + 1);
+
+    this._currentRowNumber = ((this._currentPageNumber - 1) * this._numberOfPage) + 1;
+    this._setActiveRow(this._currentRowNumber);
   }
 
-  _prevPage() {
-    this._showResults(this._currentPageNo - 1);
+  _prevPage(currentRowNumber) {
+    if (this._currentPageNumber <= 1) {
+      return;
+    }
+
+    this._showResults(this._currentPageNumber - 1);
+
+    this._currentRowNumber = ((this._currentPageNumber - 1) * this._numberOfPage) + 1;
+    this._setActiveRow(this._currentRowNumber);
   }
 
-  _showResults(pageNo) {
-    pageNo = pageNo || 1;
+  _nextRow() {
+    if (this._currentRowNumber >= this._results.length) {
+      return;
+    }
 
-    this._currentPageNo = pageNo;
-    const start = (pageNo - 1) * this._numberOfPage + 1;
+    this._currentRowNumber++;
+    const pageNumber = Math.ceil(this._currentRowNumber / this._numberOfPage);
+    if (pageNumber != this._currentPageNumber) {
+      // change page
+      this._showResults(pageNumber);
+    }
+    this._setActiveRow(this._currentRowNumber);
+  }
+
+  _prevRow() {
+    if (this._currentRowNumber <= 1) {
+      return;
+    }
+
+    this._currentRowNumber--;
+    const pageNumber = Math.ceil(this._currentRowNumber / this._numberOfPage);
+    if (pageNumber != this._currentPageNumber) {
+      // change page
+      this._showResults(pageNumber);
+    }
+    this._setActiveRow(this._currentRowNumber);
+  }
+
+  _setActiveRow(rowNumber) {
+
+    this._elements.$resultTable.find('tr.active').removeClass('active');
+    this._elements.$resultTable.find(`tr[data-row-number="${rowNumber}"]`).addClass('active');
+  }
+
+  _getCurrentRowBookmark() {
+    return this._results[this._currentRowNumber - 1];
+  }
+
+  _openCurrentRowUrl() {
+    window.open(this._getCurrentRowBookmark().url, '_blank');
+  }
+
+  _openCurrentRowEditWindow() {
+    window.open(this._service.createEditUrl(this._getCurrentRowBookmark()), '_blank');
+  }
+
+  _showResults(pageNumber) {
+    pageNumber = pageNumber || 1;
+
+    this._currentPageNumber = pageNumber;
+    const start = (pageNumber - 1) * this._numberOfPage + 1;
     var end = start + this._numberOfPage - 1;
     if (end > this._results.length) {
       end = this._results.length;
     }
     
-    const pageResults = this._results.slice(start - 1, end);
-    this._renderTableBody(pageResults);
+    this._renderTableBody(start, end);
 
     this._elements.$status.text(this._createStatusText(start, end));
 
@@ -93,11 +190,17 @@ class SearchableTable {
     return `${format(this._results.length)} hits (display: ${format(start)}-${format(end)}) / total: ${format(this._bookmarks.total())}`;
   }
 
-  _renderTableBody(pageResults) {
+  _renderTableBody(start, end) {
     this._elements.$resultTable.children().remove();
 
+    const pageResults = this._results.slice(start - 1, end);
+
+    let rowNumber = start;
     for (const bookmark of pageResults) {
-      this._elements.$resultTable.append(this._createRecord(bookmark))
+      const row = this._createRecord(bookmark);
+      this._elements.$resultTable.append($(row).attr('data-row-number', rowNumber));
+
+      rowNumber++;
     }
   }
 
@@ -161,6 +264,7 @@ const searchableTable = new SearchableTable(
     }
   },
   {
+    $document: $(document),
     $query: $('#query'),
     $resultTable: $('#resultTable'),
     $status: $('#status'),
