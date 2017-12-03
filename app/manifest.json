@@ -10,8 +10,7 @@
     "default_icon": "icons/icon128.png"
   },
   "permissions": [
-    "tabs",
-    "cookies",
+    "storage",
     "https://api.pinboard.in/*",
     "https://www.google.com/bookmarks/*",
     "http://b.hatena.ne.jp/*"

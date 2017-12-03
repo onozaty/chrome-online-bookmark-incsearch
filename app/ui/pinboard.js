@@ -21,7 +21,6 @@ class PinboardLoader {
         .done((xml) => {
           
           const $xml = $(xml);
-          const userId = $xml.find('posts').attr('user');
           const bookmarks = $xml.find('post').map((index, element) => {
             const $element = $(element);
 
@@ -39,12 +38,10 @@ class PinboardLoader {
             ].join("\n").toLowerCase();
 
             return bookmark;
-          });
+          })
+          .toArray();
 
-          resolve({
-            userId: userId,
-            bookmarks: bookmarks
-          });
+          resolve(bookmarks);
         })
         .fail((jqXHR, textStatus, errorThrown) => {
           reject(`${jqXHR.status}(${jqXHR.statusText}))`);
