@@ -23,7 +23,7 @@ async function loadBookmarks(service) {
 
     $loadingMessage.text(`${format(bookmarks.length)} bookmarks loading is Completed.`);
   } catch (e) {
-    $loadingMessage.text(`Bookmarks loading is failed. message: ${e}`);
+    $loadingMessage.text(`Bookmarks loading is failed. (error message: ${e})`);
   }
 
   $progressBar.removeClass('active');
