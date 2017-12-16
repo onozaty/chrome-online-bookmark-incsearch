@@ -4,14 +4,22 @@ const format = (num) => {
 }
 
 class SearchableTable {
-  constructor(bookmarks, numberOfPage, service, elements) {
+  constructor(bookmarks, numberOfRowsPerPage, service, elements) {
 
     this._bookmarks = new Bookmarks(bookmarks);
-    this._numberOfPage = numberOfPage;
+    this._numberOfRowsPerPage = numberOfRowsPerPage;
     this._service = service;
     this._elements = elements;
 
     this._setup();
+  }
+
+  refresh(bookmarks, numberOfRowsPerPage, service) {
+    this._bookmarks = new Bookmarks(bookmarks);
+    this._numberOfRowsPerPage = numberOfRowsPerPage;
+    this._service = service;
+
+    this._oldQuery = null;
   }
 
   _setup() {
@@ -92,13 +100,13 @@ class SearchableTable {
   }
 
   _nextPage() {
-    if (this._currentPageNumber >= Math.ceil(this._results.length / this._numberOfPage)) {
+    if (this._currentPageNumber >= Math.ceil(this._results.length / this._numberOfRowsPerPage)) {
       return;
     }
 
     this._showResults(this._currentPageNumber + 1);
 
-    this._currentRowNumber = ((this._currentPageNumber - 1) * this._numberOfPage) + 1;
+    this._currentRowNumber = ((this._currentPageNumber - 1) * this._numberOfRowsPerPage) + 1;
     this._setActiveRow(this._currentRowNumber);
   }
 
@@ -109,7 +117,7 @@ class SearchableTable {
 
     this._showResults(this._currentPageNumber - 1);
 
-    this._currentRowNumber = ((this._currentPageNumber - 1) * this._numberOfPage) + 1;
+    this._currentRowNumber = ((this._currentPageNumber - 1) * this._numberOfRowsPerPage) + 1;
     this._setActiveRow(this._currentRowNumber);
   }
 
@@ -119,7 +127,7 @@ class SearchableTable {
     }
 
     this._currentRowNumber++;
-    const pageNumber = Math.ceil(this._currentRowNumber / this._numberOfPage);
+    const pageNumber = Math.ceil(this._currentRowNumber / this._numberOfRowsPerPage);
     if (pageNumber != this._currentPageNumber) {
       // change page
       this._showResults(pageNumber);
@@ -133,7 +141,7 @@ class SearchableTable {
     }
 
     this._currentRowNumber--;
-    const pageNumber = Math.ceil(this._currentRowNumber / this._numberOfPage);
+    const pageNumber = Math.ceil(this._currentRowNumber / this._numberOfRowsPerPage);
     if (pageNumber != this._currentPageNumber) {
       // change page
       this._showResults(pageNumber);
@@ -163,8 +171,8 @@ class SearchableTable {
     pageNumber = pageNumber || 1;
 
     this._currentPageNumber = pageNumber;
-    const start = (pageNumber - 1) * this._numberOfPage + 1;
-    var end = start + this._numberOfPage - 1;
+    const start = (pageNumber - 1) * this._numberOfRowsPerPage + 1;
+    var end = start + this._numberOfRowsPerPage - 1;
     if (end > this._results.length) {
       end = this._results.length;
     }
