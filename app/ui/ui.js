@@ -1,7 +1,33 @@
 async function loadBookmarks(service) {
 
-  const bookmarks = await service.newLoader().load();
-  await Storage.set({bookmarks: bookmarks});
+  const $loadingDialog = $('#loadingDialog');
+  const $loadingMessage = $('#loadingMessage');
+  const $progressBar = $loadingDialog.find('.progress-bar');
+  const $closeButton = $loadingDialog.find('.modal-footer button');
+
+  $loadingMessage.text('Loading...');
+  $progressBar.addClass('active').css('width', '0%');
+  $closeButton.prop('disabled', true);
+
+  $loadingDialog.modal({
+    backdrop: 'static'
+  });
+
+  let bookmarks = [];
+  try {
+    $progressBar.css('width', '30%');
+    bookmarks = await service.newLoader().load();
+    $progressBar.css('width', '100%');
+
+    await Storage.set({bookmarks: bookmarks});
+
+    $loadingMessage.text(`${format(bookmarks.length)} bookmarks loading is Completed.`);
+  } catch (e) {
+    $loadingMessage.text(`Bookmarks loading is failed. message: ${e}`);
+  }
+
+  $progressBar.removeClass('active');
+  $closeButton.prop('disabled', false);
 
   return bookmarks;
 }
@@ -11,6 +37,15 @@ async function startup() {
   // Setting dialog
   const $inputNumberOfRowsPerPage = $('#inputNumberOfRowsPerPage');
   const $selectService = $('#selectService');
+
+  $('#buttonSync').on('click', async () => {
+    bookmarks = await loadBookmarks(service);
+
+    searchableTable.refresh(
+      bookmarks,
+      settings.numberOfRowsPerPage,
+      service);
+  });
 
   $('#buttonOpenSetting').on('click', () => {
     $inputNumberOfRowsPerPage.val(settings.numberOfRowsPerPage);
