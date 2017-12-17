@@ -1,37 +1,36 @@
-class PinboardService {
+class GoogleService {
 
   createEditUrl(bookmark) {
-    return 'https://pinboard.in/add?next=same&url=' + encodeURIComponent(bookmark.url);
+    return 'http://www.google.com/bookmarks/mark?op=edit&output=popup&bkmk=' + encodeURIComponent(bookmark.url);
   }
 
   newLoader() {
-    return new PinboardLoader();
+    return new GoogleLoader();
   }
 }
 
-class PinboardLoader {
+class GoogleLoader {
 
   load() {
     return new Promise((resolve, reject) => {
       $.ajax(
-        'https://api.pinboard.in/v1/posts/all',
+        'https://www.google.com/bookmarks/lookup?output=rss&sort=date&num=10000000',
         {
           dataType: 'xml'
         })
         .done((xml) => {
           
           const $xml = $(xml);
-          const bookmarks = $xml.find('post').map((index, element) => {
+          const bookmarks = $xml.find('item').map((index, element) => {
             const $element = $(element);
 
             const bookmark = {};
             bookmark.id = index;
-            bookmark.url = $element.attr('href');
-            bookmark.title = $element.attr('description');
-            bookmark.description = $element.attr('extended');
-            const tags = $element.attr('tag');
-            bookmark.tags = (tags == '') ? '' : tags.split(' ').map((item) => '[' + item + ']').join(' ');
-            bookmark.time = $element.attr('time');
+            bookmark.url = $element.find('link').text();
+            bookmark.title = $element.find('title').text();
+            bookmark.description = $element.find('smh\\:bkmk_annotation').text();
+            bookmark.tags = $element.find('smh\\:bkmk_label').toArray().map((item) => '[' + $(item).text() + ']').join(' ');
+            bookmark.time = $element.find('pubDate').text();
             bookmark.searchableText = [
               bookmark.title,
               bookmark.description,
