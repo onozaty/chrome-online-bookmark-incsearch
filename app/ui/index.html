@@ -23,7 +23,7 @@
           <button type="button" id="buttonOpenSetting" class="btn btn-link btn-xs">
             <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Setting
           </button>
-          <button type="button" class="btn btn-link btn-xs">
+          <button type="button" id="buttonOpenHelp" class="btn btn-link btn-xs">
             <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> Help
           </button>
         </div>
@@ -110,6 +110,83 @@
               <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
               </div>
             </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal" id="helpDialog" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Help</h4>
+          </div>
+          <div class="modal-body">
+            <h5>Shortcut keys</h5>
+            <table class="table table-bordered table-condensed">
+              <tbody>
+                <tr>
+                  <th class="key">Ctrl + Right</th>
+                  <td>Next page</td>
+                </tr>
+                <tr>
+                  <th class="key">Ctrl + Left</th>
+                  <td>Previous page</td>
+                </tr>
+                <tr>
+                  <th class="key">Ctrl + Down</th>
+                  <td>Next bookmark</td>
+                </tr>
+                <tr>
+                  <th class="key">Ctrl + Up</th>
+                  <td>Previous bookmark</td>
+                </tr>
+                <tr>
+                  <th class="key">Ctrl + Down</th>
+                  <td>Next bookmark</td>
+                </tr>
+                <tr>
+                  <th class="key">Ctrl + Enter<br>Ctrl + M</th>
+                  <td>Open bookmark</td>
+                </tr>
+                <tr>
+                  <th class="key">Ctrl + E</th>
+                  <td>Edit bookmark</td>
+                </tr>
+                <tr>
+                  <th class="key">Ctrl + U</th>
+                  <td>Load bookmarks from online bookmark service</td>
+                </tr>
+                <tr>
+                  <th class="key">Ctrl + S</th>
+                  <td>Toggle setting dialog</td>
+                </tr>
+                <tr>
+                  <th class="key">Ctrl + /</th>
+                  <td>Toggle help dialog</td>
+                </tr>
+              </tbody>
+            </table>
+            <h5>Query</h5>
+            <table class="table table-bordered table-condensed">
+              <tbody>
+                <tr>
+                  <th class="key">a b</th>
+                  <td>a AND b</td>
+                </tr>
+                <tr>
+                  <th class="key">a|b</th>
+                  <td>a OR b</td>
+                </tr>
+                <tr>
+                  <th class="key">!a</th>
+                  <td>NOT a</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

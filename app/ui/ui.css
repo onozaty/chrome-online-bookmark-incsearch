@@ -22,7 +22,7 @@ h1 {
   margin-left: 5px;
 }
 
-.table, .table-responsive {
+.table:last-child, .table-responsive:last-child {
   margin-bottom: 0;
 }
 
@@ -42,4 +42,14 @@ td > p {
 }
 .highlight.color4 {
   background-color: #FFCC99;
+}
+
+/* Help dialog */
+.modal-body h5 {
+  font-size: 16px;
+}
+
+th.key {
+  width: 30%;
+  white-space: nowrap;
 }

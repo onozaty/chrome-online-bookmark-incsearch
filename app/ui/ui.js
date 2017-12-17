@@ -34,10 +34,7 @@ async function loadBookmarks(service) {
 
 async function startup() {
 
-  // Setting dialog
-  const $inputNumberOfRowsPerPage = $('#inputNumberOfRowsPerPage');
-  const $selectService = $('#selectService');
-
+  // Sync dialog
   $('#buttonSync').on('click', async () => {
     bookmarks = await loadBookmarks(service);
 
@@ -46,6 +43,10 @@ async function startup() {
       settings.numberOfRowsPerPage,
       service);
   });
+
+  // Setting dialog
+  const $inputNumberOfRowsPerPage = $('#inputNumberOfRowsPerPage');
+  const $selectService = $('#selectService');
 
   $('#buttonOpenSetting').on('click', () => {
     $inputNumberOfRowsPerPage.val(settings.numberOfRowsPerPage);
@@ -73,6 +74,13 @@ async function startup() {
       bookmarks,
       settings.numberOfRowsPerPage,
       service);
+  });
+
+  // Help dialog
+  $('#buttonOpenHelp').on('click', async () => {
+    $('#helpDialog').modal({
+      backdrop: 'static'
+    });
   });
 
   $selectService.empty();
