@@ -1,33 +1,20 @@
-class GoogleService {
+class HatenaService {
 
   createEditUrl(bookmark) {
-    return 'http://www.google.com/bookmarks/mark?op=edit&output=popup&bkmk=' + encodeURIComponent(bookmark.url);
+    return 'http://b.hatena.ne.jp/add?mode=confirm&url=' + encodeURIComponent(bookmark.url);
   }
 
   newLoader() {
-    return new GoogleLoader();
+    return new HatenaLoader();
   }
 }
 
-class GoogleLoader {
+class HatenaLoader {
 
-  async load() {
-    const num = 1000;
-    let bookmarks = [];
-    let tempBookmarks = [];
-
-    do {
-      tempBookmarks = await this._load(bookmarks.length, num);
-      bookmarks = bookmarks.concat(tempBookmarks);
-    } while(tempBookmarks.length == num);
-
-    return bookmarks;
-  }
-
-  _load(start, num) {
+  load() {
     return new Promise((resolve, reject) => {
       $.ajax(
-        `https://www.google.com/bookmarks/lookup?output=rss&sort=date&start=${start}&num=${num}`,
+        'http://b.hatena.ne.jp/dump?mode=rss',
         {
           dataType: 'xml'
         })
@@ -41,9 +28,9 @@ class GoogleLoader {
             bookmark.id = index;
             bookmark.url = $element.find('link').text();
             bookmark.title = $element.find('title').text();
-            bookmark.description = $element.find('smh\\:bkmk_annotation').text();
-            bookmark.tags = $element.find('smh\\:bkmk_label').toArray().map((item) => '[' + $(item).text() + ']').join(' ');
-            bookmark.time = $element.find('pubDate').text();
+            bookmark.description = $element.find('description').text();
+            bookmark.tags = $element.find('dc\\:subject').toArray().map((item) => '[' + $(item).text() + ']').join(' ');
+            bookmark.time = $element.find('dc\\:date').text();
             bookmark.searchableText = [
               bookmark.title,
               bookmark.description,
