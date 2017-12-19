@@ -171,8 +171,9 @@ class SearchableTable {
     pageNumber = pageNumber || 1;
 
     this._currentPageNumber = pageNumber;
-    const start = (pageNumber - 1) * this._numberOfRowsPerPage + 1;
-    var end = start + this._numberOfRowsPerPage - 1;
+    const start = (this._results.length == 0)
+                    ? 0 : (pageNumber - 1) * this._numberOfRowsPerPage + 1;
+    let end = start + this._numberOfRowsPerPage - 1;
     if (end > this._results.length) {
       end = this._results.length;
     }
@@ -213,7 +214,7 @@ class SearchableTable {
   }
 
   _createRecord(bookmark) {
-    var fragments = ['<tr><td></td>'];
+    let fragments = ['<tr><td></td>'];
     
     fragments.push('<td>');
     fragments.push(`<a href="${bookmark.url}" target="_blank">${this._createText(bookmark.title, this._conditions)}</a>`);

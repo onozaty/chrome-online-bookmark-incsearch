@@ -19,12 +19,12 @@ async function loadBookmarks(service) {
     bookmarks = await service.newLoader().load();
     $progressBar.css('width', '100%');
 
-    await Storage.set({bookmarks: bookmarks});
-
     $loadingMessage.text(`${format(bookmarks.length)} bookmarks loading is Completed.`);
   } catch (e) {
     $loadingMessage.text(`Bookmarks loading is failed. (error message: ${e})`);
   }
+
+  await Storage.set({bookmarks: bookmarks});
 
   $progressBar.removeClass('active');
   $closeButton.prop('disabled', false);
@@ -47,18 +47,20 @@ async function startup() {
   // Setting dialog
   const $inputNumberOfRowsPerPage = $('#inputNumberOfRowsPerPage');
   const $selectService = $('#selectService');
+  const $settingDialog = $('#settingDialog');
 
   $('#buttonOpenSetting').on('click', () => {
     $inputNumberOfRowsPerPage.val(settings.numberOfRowsPerPage);
     $selectService.val(settings.serviceId);
 
-    $('#settingDialog').modal({
+    $settingDialog.find('button.close, button[data-dismiss="modal"]').show();
+    $settingDialog.modal({
       backdrop: 'static'
     });
   });
 
   $('#buttonSaveSetting').on('click', async () => {
-    $('#settingDialog').modal('hide');
+    $settingDialog.modal('hide');
 
     settings.numberOfRowsPerPage = parseInt($inputNumberOfRowsPerPage.val());
     settings.serviceId = $selectService.val();
@@ -90,14 +92,21 @@ async function startup() {
   });
 
   let settings = (await Storage.get('settings')) || {numberOfRowsPerPage: 10};
-  let bookmarks = (await Storage.get('bookmarks')) || (await loadBookmarks(service));
+  let bookmarks = (await Storage.get('bookmarks')) || [];
 
   if (!settings.serviceId) {
     // Select service
-    settings.serviceId = ServiceId.PINBOARD;
+    $inputNumberOfRowsPerPage.val(settings.numberOfRowsPerPage);
+
+    $settingDialog.find('button.close, button[data-dismiss="modal"]').hide();
+    $settingDialog.modal({
+      backdrop: 'static'
+    });
   }
 
-  let service = Services.filter((service) => service.id == settings.serviceId)[0].service;
+  let service = (settings.serviceId != null)
+                  ? Services.filter((service) => service.id == settings.serviceId)[0].service
+                  : null;
 
   const searchableTable = new SearchableTable(
     bookmarks,
