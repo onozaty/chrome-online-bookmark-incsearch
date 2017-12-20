@@ -14,16 +14,40 @@ h1 {
   vertical-align: text-top;
 }
 
+.table:last-child, .table-responsive:last-child {
+  margin-bottom: 0;
+}
+
 .btn.btn-link {
   padding: 0;
 }
-
 .btn.pager-next {
   margin-left: 5px;
 }
 
-.table:last-child, .table-responsive:last-child {
-  margin-bottom: 0;
+th.cursor {
+  width: 1px;
+}
+th.description {
+  width: auto;
+}
+th.tags {
+  width: 20%;
+}
+th.time {
+  width: 15%;
+  white-space: nowrap;
+}
+th.edit {
+  width: 3%;
+  white-space: nowrap;
+}
+
+table.result-table > tbody > tr.active > td.cursor {
+  background-color: #d3d3d3;
+}
+td.time, td.edit {
+  white-space: nowrap;
 }
 
 td > p {
@@ -44,7 +68,11 @@ td > p {
   background-color: #FFCC99;
 }
 
-/* Help dialog */
+/* dialog */
+.modal-header {
+  padding: 10px 15px;
+}
+
 .modal-body h5 {
   font-size: 16px;
 }

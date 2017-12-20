@@ -214,9 +214,9 @@ class SearchableTable {
   }
 
   _createRecord(bookmark) {
-    let fragments = ['<tr><td></td>'];
+    let fragments = ['<tr><td class="cursor"></td>'];
     
-    fragments.push('<td>');
+    fragments.push('<td class="description">');
     fragments.push(`<a href="${bookmark.url}" target="_blank">${this._createText(bookmark.title, this._conditions)}</a>`);
 
     if (bookmark.description) {
@@ -224,9 +224,9 @@ class SearchableTable {
     }
     fragments.push('</td>');
 
-    fragments.push(`<td>${this._createText(bookmark.tags, this._conditions)}</td>`);
-    fragments.push(`<td>${this._createText(bookmark.time)}</td>`);
-    fragments.push(`<td><a href="${this._service.createEditUrl(bookmark)}" target="_blank">edit</a></td>`);
+    fragments.push(`<td class="tags">${this._createText(bookmark.tags, this._conditions)}</td>`);
+    fragments.push(`<td class="time">${this._createText(bookmark.time)}</td>`);
+    fragments.push(`<td class="edit"><a href="${this._service.createEditUrl(bookmark)}" target="_blank">edit</a></td>`);
 
     return fragments.join('');
   }
