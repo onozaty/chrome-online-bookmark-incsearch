@@ -69,7 +69,7 @@ HatenaBookmarkLoader.prototype._load = function() {
       try {
         request.status
       } catch(e) {
-        // error 
+        // error
         self.error('error :connect error :' + self.url);
       }
 
@@ -78,6 +78,9 @@ HatenaBookmarkLoader.prototype._load = function() {
 
         //var xml = parser.parseFromString(request.responseText.replace(/[\x00-\x1F]|\7F/g,""), 'text/xml');
         var xml = request.responseXML;
+        if (xml == null) {
+          xml = (new DOMParser()).parseFromString(request.responseText, "application/xml");
+        }
 
         var userId = HatenaBookmarkParser.getUserId(xml);
 
